@@ -140,4 +140,245 @@ public void CheckInternet(Context context) {
         }
     }
  
+   public static String getCurrentDate() {
+        String formattedDate = getTimeByFormat("dd-MMM-yyyy hh:mm:ss");
+        return formattedDate ;
+    }
+
+
+    public static  String getCurrentTime(){
+
+        String formattedTime =getTimeByFormat("hh:mm");
+        return formattedTime ;
+    }
+
+
+
+    private static String getTimeByFormat(String format){
+        Calendar c = Calendar.getInstance();
+        SimpleDateFormat df = new SimpleDateFormat(format);
+        df.setTimeZone(TimeZone.getTimeZone("Asia/Dhaka"));
+        String formattedDate = df.format(c.getTime());
+        return formattedDate ;
+    }
+    public static  void notifyUser(Context context,String title,  String msg) {
+        int mId = 001;
+
+        NotificationCompat.Builder mBuilder =
+                new NotificationCompat.Builder(context)
+                        .setSmallIcon(R.mipmap.teacher)
+                        .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.mipmap.teacher))
+                        .setContentTitle(title)
+                        .setContentText(msg)
+                        //.setSubText("Tap to check what they offering!")
+                        .setTicker(context.getResources().getString(R.string.student_news))
+                        .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
+                        .setAutoCancel(true);
+        // Creates an explicit intent for an Activity in your app
+        Intent resultIntent = new Intent(context, MainActivity.class);
+
+        // The stack builder object will contain an artificial back stack for the
+        // started Activity.
+        // This ensures that navigating backward from the Activity leads out of
+        // your application to the Home screen.
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
+        // Adds the back stack for the Intent (but not the Intent itself)
+        stackBuilder.addParentStack(MainActivity.class);
+        // Adds the Intent that starts the Activity to the top of the stack
+        stackBuilder.addNextIntent(resultIntent);
+        PendingIntent resultPendingIntent =
+                stackBuilder.getPendingIntent(
+                        0,
+                        PendingIntent.FLAG_UPDATE_CURRENT
+                );
+        mBuilder.setContentIntent(resultPendingIntent);
+        NotificationManager mNotificationManager = (NotificationManager)context.getSystemService(context.NOTIFICATION_SERVICE);
+        // mId allows you to update the notification later on.
+        mNotificationManager.notify(mId, mBuilder.build());
+    }
+ 
+ 
+  public static String getGreetings(Context context){
+        String greetings = "";
+        String formattedTime = getTimeByFormat("HH");
+
+        int hour  = Integer.parseInt(formattedTime);
+        if(hour>5 && hour<11){
+            greetings = context.getResources().getString(R.string.good_morning);
+        }
+        else if(hour>11 && hour<17){
+            greetings = context.getResources().getString(R.string.good_afternoon);
+        }
+        else{
+            greetings = context.getResources().getString(R.string.good_evening);
+        }
+
+        return greetings ;
+    }
+
+
+    private static String getTimeByFormat(String format){
+        Calendar c = Calendar.getInstance();
+        SimpleDateFormat df = new SimpleDateFormat(format);
+        df.setTimeZone(TimeZone.getTimeZone("Asia/Dhaka"));
+        String formattedDate = df.format(c.getTime());
+        return formattedDate ;
+    }
+
+    private static   final Pattern IP_ADDRESS
+            = Pattern.compile(
+            "((25[0-5]|2[0-4][0-9]|[0-1][0-9]{2}|[1-9][0-9]|[1-9])\\.(25[0-5]|2[0-4]"
+                    + "[0-9]|[0-1][0-9]{2}|[1-9][0-9]|[1-9]|0)\\.(25[0-5]|2[0-4][0-9]|[0-1]"
+                    + "[0-9]{2}|[1-9][0-9]|[1-9]|0)\\.(25[0-5]|2[0-4][0-9]|[0-1][0-9]{2}"
+                    + "|[1-9][0-9]|[0-9]))");
+
+
+    public static boolean validateIP(String ip ){
+        boolean validate = false ;
+        Matcher matcher = IP_ADDRESS.matcher(ip);
+        if (matcher.matches()) {
+            return true ;
+        }
+        return validate  ;
+    }
+    public static  void notifyUser(Context context, String msg) {
+        int mId = 001;
+
+        NotificationCompat.Builder mBuilder =
+                new NotificationCompat.Builder(context)
+                        .setSmallIcon(R.mipmap.student_icon)
+                        .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.mipmap.student_icon))
+                        .setContentTitle(context.getResources().getString(R.string.teacher_says))
+                        .setContentText(msg)
+                        //.setSubText("Tap to check what they offering!")
+                        .setTicker(context.getResources().getString(R.string.teacher_says))
+                        .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
+                        .setAutoCancel(true);
+        // Creates an explicit intent for an Activity in your app
+        Intent resultIntent = new Intent(context, MainActivity.class);
+
+        // The stack builder object will contain an artificial back stack for the
+        // started Activity.
+        // This ensures that navigating backward from the Activity leads out of
+        // your application to the Home screen.
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
+        // Adds the back stack for the Intent (but not the Intent itself)
+        stackBuilder.addParentStack(MainActivity.class);
+        // Adds the Intent that starts the Activity to the top of the stack
+        stackBuilder.addNextIntent(resultIntent);
+        PendingIntent resultPendingIntent =
+                stackBuilder.getPendingIntent(
+                        0,
+                        PendingIntent.FLAG_UPDATE_CURRENT
+                );
+        mBuilder.setContentIntent(resultPendingIntent);
+        NotificationManager mNotificationManager = (NotificationManager)context.getSystemService(context.NOTIFICATION_SERVICE);
+        // mId allows you to update the notification later on.
+        mNotificationManager.notify(mId, mBuilder.build());
+    }
+
+    public static void showMessageDialog(Context context, String title, String message) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle(title)
+            .setMessage(message)
+                .setCancelable(false)
+                .setIcon(R.mipmap.student_icon)
+                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+
+                    }
+                })
+                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+        AlertDialog alert = builder.create();
+        alert.show();
+    }
+ 
+ 
+    public static boolean isValidURL(String urlStr) {
+        try {
+            URI uri = new URI(urlStr);
+            return uri.getScheme().equals("http") || uri.getScheme().equals("https");
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    public static Bitmap getBitmapFromFile(String path) {
+
+        File imageFile = new File(path);
+        Bitmap bitmap = null;
+        if (imageFile.exists()) {
+            bitmap = BitmapFactory.decodeFile(imageFile.getAbsolutePath());
+        }
+
+        return bitmap;
+    }
+
+    public static Bitmap getBitmapFromURI(Uri uri, Context context) {
+        Bitmap bitmap = null;
+        try {
+            bitmap = MediaStore.Images.Media.getBitmap(context.getContentResolver(), uri);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return bitmap;
+    }
+
+    public static void removeFromArrayListByName(ArrayList<String> arrayList, String name) {
+
+        for (int i = 0; i < arrayList.size(); i++) {
+            if (arrayList.get(i).equalsIgnoreCase(name)) {
+                arrayList.remove(i);
+            }
+        }
+
+    }
+
+    public static ArrayList<String> getValuesFromHashMap(HashMap<String, String> hashMap) {
+        ArrayList<String> values = new ArrayList<>();
+        for (String key : hashMap.keySet()) {
+            values.add(hashMap.get(key));
+        }
+        return values;
+    }
+
+    public static Object getKeyFromValue(Map hm, Object value) {
+        for (Object o : hm.keySet()) {
+            if (hm.get(o).equals(value)) {
+                return o;
+            }
+        }
+        return null;
+    }
+
+
+    public static ArrayList<String> getTagList(ArrayList<String> tagList) {
+
+        //declare a ArrayList for storing tag
+        ArrayList<String> finalTagList = new ArrayList<>();
+
+        for (int i = 0; i < tagList.size(); i++) {
+
+            //spliting the tagList element
+            String[] tag = tagList.get(i).split(",");
+            for (int j = 0; j < tag.length; j++) {
+
+               if(!finalTagList.contains(tag[j])){
+                   finalTagList.add(tag[j]);
+               }
+            }
+        }
+        return finalTagList;
+    }
+
+ 
+ 
+ 
+ 
 }
